@@ -1,9 +1,15 @@
+using TestApplication.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+//using System.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
+//var connection = Configuration.GetConnectionString("TestApplicationDatabase");
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddDbContextPool<TestApplicationContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
