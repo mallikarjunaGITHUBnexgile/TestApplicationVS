@@ -38,7 +38,6 @@ namespace TestApplication.Controllers
             {
                 return NotFound();
             }
-
             return managerTable;
         }
 
@@ -74,12 +73,27 @@ namespace TestApplication.Controllers
         }
 
         // POST: api/ManagerTables
+        // Adding Manager
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ManagerTable>> PostManagerTable(ManagerTable managerTable)
         {
-            _context.ManagerTables.Add(managerTable);
-            await _context.SaveChangesAsync();
+            var signUpManager = new ManagerTable();
+            signUpManager.MailId = managerTable.MailId;
+            signUpManager.Password = managerTable.Password;
+            signUpManager.ConfirmPassword = managerTable.ConfirmPassword;
+
+            signUpManager.FirstName = managerTable.FirstName;
+            signUpManager.LastName = managerTable.LastName;
+            signUpManager.PhoneNumber = managerTable.PhoneNumber;
+            signUpManager.AddressLine1 = managerTable.AddressLine1;
+            signUpManager.AddressLine2= managerTable.AddressLine2;  
+            signUpManager.Country=  managerTable.Country;
+            signUpManager.ManagerId = managerTable.ManagerId;   
+            signUpManager.RoleId = managerTable.RoleId; 
+
+            /*_context.ManagerTables.Add(managerTable);
+            await _context.SaveChangesAsync();*/
 
             return CreatedAtAction("GetManagerTable", new { id = managerTable.ManagerId }, managerTable);
         }
