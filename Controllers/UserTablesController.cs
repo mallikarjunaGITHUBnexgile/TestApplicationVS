@@ -36,7 +36,7 @@ namespace TestApplication.Controllers
 
             if (userTable == null)
             {
-                return NotFound();
+                return NotFound("No Record Found");
             }
 
             return userTable;
