@@ -69,7 +69,7 @@ namespace TestApplication.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(managerTable.ManagerId);
         }
 
         // POST: api/ManagerTables
@@ -78,7 +78,14 @@ namespace TestApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<ManagerTable>> PostManagerTable(ManagerTable managerTable)
         {
+            
             var signUpManager = new ManagerTable();
+            //var mailId = _context.ManagerTables.SingleOrDefault(x => x.MailId == managerTable.MailId).ToString();
+            /* if (managerTable.MailId == mailId)
+             {
+                 return Ok(managerTable.MailId+" already exist");
+             }*/
+            
             signUpManager.MailId = managerTable.MailId;
             signUpManager.Password = managerTable.Password;
             signUpManager.ConfirmPassword = managerTable.ConfirmPassword;
@@ -89,13 +96,17 @@ namespace TestApplication.Controllers
             signUpManager.AddressLine1 = managerTable.AddressLine1;
             signUpManager.AddressLine2= managerTable.AddressLine2;  
             signUpManager.Country=  managerTable.Country;
-            signUpManager.ManagerId = managerTable.ManagerId;   
+            //signUpManager.ManagerId = managerTable.ManagerId;   
             signUpManager.RoleId = managerTable.RoleId; 
+
+            _context.ManagerTables.Add(signUpManager);
+            await _context.SaveChangesAsync();
 
             /*_context.ManagerTables.Add(managerTable);
             await _context.SaveChangesAsync();*/
 
-            return CreatedAtAction("GetManagerTable", new { id = managerTable.ManagerId }, managerTable);
+            return CreatedAtAction("GetManagerTable", new { id = managerTable.ManagerId }, signUpManager);
+
         }
 
         // DELETE: api/ManagerTables/5

@@ -21,15 +21,15 @@ namespace TestApplication.Controllers
             _context = context;
         }
 
-        // GET: api/UserTables
-        [HttpGet("User")]
+        // GET: api/UserTables/getAllUsers
+        [HttpGet("getAllUsers")]
         public async Task<ActionResult<IEnumerable<UserTable>>> GetUserTables()
         {
             return await _context.UserTables.ToListAsync();
         }
 
-        // GET: api/UserTables/5
-        [HttpGet("{id}")]
+        // GET: api/UserTables/getUser/5
+        [HttpGet("getUser/{id}")]
         public async Task<ActionResult<UserTable>> GetUserTable(int id)
         {
             var userTable = await _context.UserTables.FindAsync(id);
@@ -42,9 +42,9 @@ namespace TestApplication.Controllers
             return userTable;
         }
 
-        // PUT: api/UserTables/5
+        // PUT: api/UserTables/update/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> PutUserTable(int id, UserTable userTable)
         {
             if (id != userTable.EmpId)
@@ -76,16 +76,48 @@ namespace TestApplication.Controllers
         // POST: api/UserTables
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserTable>> PostUserTable(UserTable userTable)
+        /*public async Task<ActionResult<UserTable>> PostUserTable(UserTable userTable)
         {
             _context.UserTables.Add(userTable);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserTable", new { id = userTable.EmpId }, userTable);
+        }*/
+
+        // POST: api/UserTables/createUser
+        [HttpPost("createUser")]
+        public async Task<ActionResult<UserTable>> PostUserTable(UserTable userTable)
+        {
+            /*_context.UserTables.Add(userTable);
+            await _context.SaveChangesAsync();*/
+
+            var signUpUser = new UserTable();
+            //signUpUser.EmpId = userTable.EmpId; 
+            signUpUser.MailId = userTable.MailId;
+            signUpUser.Password=userTable.Password;
+            signUpUser.ConfirmPassword = userTable.ConfirmPassword;
+
+            signUpUser.FirstName = userTable.FirstName;
+            signUpUser.LastName = userTable.LastName;
+            signUpUser.PhoneNumber = userTable.PhoneNumber;
+            //signUpUser.RoleId = userTable.RoleId;
+            signUpUser.ManagerId = userTable.ManagerId;
+            signUpUser.City = userTable.City;
+            signUpUser.State = userTable.State;
+            signUpUser.AddressLine1 = userTable.AddressLine1;
+            signUpUser.AddressLine2 = userTable.AddressLine2;
+            signUpUser.Country = userTable.Country;
+            signUpUser.Zipcode = userTable.Zipcode;
+
+            _context.UserTables.Add(signUpUser);
+            await _context.SaveChangesAsync();
+
+
+            return CreatedAtAction("GetUserTable", new { id = userTable.EmpId }, userTable);
         }
 
-        // DELETE: api/UserTables/5
-        [HttpDelete("{id}")]
+        // DELETE: api/UserTables/delete/5
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteUserTable(int id)
         {
             var userTable = await _context.UserTables.FindAsync(id);
